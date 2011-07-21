@@ -212,24 +212,149 @@ window.addEventListener('load', function(){ setTimeout(function(){ loaded(); }, 
 
 </script>
 </head>
-<body>
-<img id="final" style="display:none" src="final.png");
-<table id="main" style="display:inline"><tr><td>
-<table>
-<tr><td><img id="button1" src="fibbokey.png"/><br/>1</td><td><img id="button2" src="fibbokey.png"/><br/>2</td></tr>
-<tr><td><img id="button3" src="fibbokey.png"/><br/>3</td><td><img id="button4" src="fibbokey.png"/><br/>4</td></tr>
-<tr><td><img id="button5" src="fibbokey.png"/><br/>5</td></tr>
+<body margin='-20'>
+
+<!-- Save for Web Slices (instrument.psd) -->
+<table id="Table_01" width="100%" height="100%" border="0" margin = "-20" cellpadding="0" cellspacing="0">
+	<tr>
+		<td colspan="16">
+			<img src="images/instrument_01.jpg" width="320" height="157" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="157" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="16">
+			<img src="images/instrument_02.jpg" width="37" height="259" alt=""></td>
+		<td rowspan="7">
+			<img id = 'button1' src="images/instrument_03.jpg" width="26" height="42" alt=""></td>
+		<td colspan="14">
+			<img src="images/instrument_04.jpg" width="257" height="14" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="14" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="12">
+			<img src="images/instrument_05.jpg" width="182" height="3" alt=""></td>
+		<td rowspan="8">
+			<img id = 'button8' src="images/instrument_06.jpg" width="25" height="36" alt=""></td>
+		<td rowspan="15">
+			<img src="images/instrument_07.jpg" width="50" height="245" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="14">
+			<img src="images/instrument_08.jpg" width="3" height="242" alt=""></td>
+		<td rowspan="8">
+			<img id = 'button2' src="images/instrument_09.jpg" width="27" height="38" alt=""></td>
+		<td colspan="10">
+			<img src="images/instrument_10.jpg" width="152" height="3" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="8">
+			<img id = 'button7' src="images/instrument_11.jpg" width="123" height="3" alt=""></td>
+		<td rowspan="8">
+			<img src="images/instrument_12.jpg" width="25" height="42" alt=""></td>
+		<td rowspan="13">
+			<img src="images/instrument_13.jpg" width="4" height="239" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="12">
+			<img src="images/instrument_14.jpg" width="4" height="236" alt=""></td>
+		<td rowspan="8">
+			<img id = 'button3' src="images/instrument_15.jpg" width="27" height="40" alt=""></td>
+		<td colspan="6">
+			<img src="images/instrument_16.jpg" width="92" height="13" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="13" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="11">
+			<img src="images/instrument_17.jpg" width="5" height="223" alt=""></td>
+		<td rowspan="9">
+			<img id = 'button4' src="images/instrument_18.jpg" width="25" height="39" alt=""></td>
+		<td colspan="4">
+			<img src="images/instrument_19.jpg" width="62" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="2">
+			<img src="images/instrument_20.jpg" width="36" height="11" alt=""></td>
+		<td rowspan="7">
+			<img id = 'button6' src="images/instrument_21.jpg" width="23" height="32" alt=""></td>
+		<td rowspan="10">
+			<img src="images/instrument_22.jpg" width="3" height="222" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="5" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="9">
+			<img src="images/instrument_23.jpg" width="26" height="217" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="8">
+			<img src="images/instrument_24.jpg" width="6" height="211" alt=""></td>
+		<td rowspan="7">
+			<img id = 'button5' src="images/instrument_25.jpg" width="30" height="35" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="2" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="7">
+			<img src="images/instrument_26.jpg" width="25" height="209" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="5" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="6">
+			<img src="images/instrument_27.jpg" width="27" height="204" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="7" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="5">
+			<img src="images/instrument_28.jpg" width="25" height="197" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="4">
+			<img src="images/instrument_29.jpg" width="27" height="196" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="3">
+			<img src="images/instrument_30.jpg" width="23" height="190" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="images/instrument_31.jpg" width="25" height="184" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/instrument_32.jpg" width="30" height="176" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="1" height="176" alt=""></td>
+	</tr>
 </table>
-</td><td>
-<table>
-<tr><td id = "indicator0"></td></tr>
-<tr><td id = "indicator1"></td></tr>
-<tr><td id = "indicator2"></td></tr>
-<tr><td id = "indicator3"></td></tr>
-<tr><td id = "indicator4"></td></tr>
-<tr><td id = "indicator5"></td></tr>
-</table>
-</td></tr></table>
+
+
+
+
+
+
 <audio id="button1audio" preload="auto" src = "1.m4a"></audio>
 <audio id="button2audio" preload="auto" src = "2.m4a"></audio>
 <audio id="button3audio" preload="auto" src = "3.m4a"></audio>
