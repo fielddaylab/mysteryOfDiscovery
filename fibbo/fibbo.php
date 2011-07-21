@@ -2,7 +2,7 @@
 <head>
 <meta name = "viewport" content = "width = device-width">
 <script type="text/javascript">
-var code= ['button1audio', 'button1audio', 'button2audio', 'button3audio', 'button5audio'];
+var code= ['button1', 'button1', 'button2', 'button3', 'button5'];
 var progress = 0;
 var x = new XMLHttpRequest();
 
@@ -22,7 +22,7 @@ function closeMe(){
     document.location.href = "aris://closeMe";
 }
 /*
-//iOS introduces a nasty delay on dispaching the clickl event. Likely something to do with multitouch.
+//iOS introduces a nasty delay on dispaching the click event. Likely something to do with multitouch.
 //As a solution, we can create a scpecial prototype that removes the delay and uses the standard
 //click event name for compatibility with normal browsers
 
@@ -75,8 +75,10 @@ NoClickDelay.prototype = {
 function buttonPressed(button){
 	console.log("buttonPressed(" + button + ")");
 	document.getElementById(button).src="fibbokeypressed.png";
-	setTimeout(function(){document.getElementById(button).src="fibbokey.png";},800);
-	initAndPlay(button + 'audio'); 
+	setTimeout(function(){document.getElementById(button).src="fibbokey.png";},500);
+	updateProgressIndicatorAfterPress(button);
+	//initAndPlay(button + 'audio'); 
+	
 }
 
 function initAndPlay(note){
@@ -97,18 +99,18 @@ function initAndPlay(note){
 	}else{
 		//audio is ready
 		console.log("noteObj.readyState == 4");
-		playNoteAndUpdateProgress(note);
+		play(note);
 	}
 }
 
 function onCanPlay(evt){
 	var note = this.id;
 	console.log("onCanPlay(" + note + ")");
-	playNoteAndUpdateProgress(note);
+	play(note);
 }
 
-function playNoteAndUpdateProgress(note){
-	console.log("playNoteAndUpdateProgress(" + note + ")");
+function play(note){
+	console.log("play(" + note + ")");
 	var noteObj = document.getElementById(note);
 	noteObj.removeEventListener('canplaythrough', onCanPlay, false);
 	noteObj.removeEventListener('load', onCanPlay, false);
@@ -117,13 +119,12 @@ function playNoteAndUpdateProgress(note){
 	noteObj.currentTime = 0.0;
 	noteObj.play();
 	
-	updateProgressIndicator(note);
 }
 
-function updateProgressIndicator(note){
-	console.log("updateProgressIndicator(" + note + ")");
+function updateProgressIndicatorAfterPress(button){
+	console.log("updateProgressIndicator(" + button + ")");
 
-	if (code[progress] == note){
+	if (code[progress] == button){
 		document.getElementById("indicator" + progress).innerHTML = "<img src=\"progress.png\"/>";
 		progress++;
 		
