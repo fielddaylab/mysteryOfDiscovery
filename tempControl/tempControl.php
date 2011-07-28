@@ -3,14 +3,9 @@
 <meta name = "viewport" content = "width = device-width">
 <STYLE TYPE="text/css">
 
-.screen
+#game
 {
-background-image:url('WidMirTempControlPortraitBG.png');
-}
-
-.inner
-{
-background-image:none;
+    background-image:url('tempcontrolbg.png');
 }
 
 </STYLE>
@@ -41,145 +36,148 @@ document.addEventListener('touchmove', function(e) { e.preventDefault(); }, true
 
 function timer()
 {
-if (!timerRunning)
-  {
-  timerRunning=1;
-  updateStatus();
-  document.getElementById('timerButton').value="Reset";
-  document.getElementById('prompt').innerHTML="";
-
-  }
-else
-  {
-  
-  timerRunning=0;
-  seconds = 0;
-  outsideTemp=65;
-  insideTemp=72;
-  people=0;
-  anger=0;
-  cost=0;
-  totalAnger=0;
-  difference=0;
-  
-  document.getElementById('timeBox').innerHTML="HRS Passed: "+Math.round(seconds/2);
-  document.getElementById('outTempBox').innerHTML=Math.round(outsideTemp)+"&deg;";
-  document.getElementById('outThermoEmpty').height=60-((outsideTemp-42)/2);
-  document.getElementById('outThermoFull').height=((outsideTemp-42)/2);
-  document.getElementById('inTempBox').innerHTML=Math.round(insideTemp)+"&deg;";
-  document.getElementById('inThermoEmpty').height=60-((insideTemp-42)/2);
-  document.getElementById('inThermoFull').height=((insideTemp-42)/2);
-  document.getElementById('costBox').innerHTML="Money Spent: $"+cost;
-  document.getElementById('peopleBox').innerHTML="People: "+people;
-  document.getElementById('angerBox').innerHTML="Complaints: "+Math.round(totalAnger/1500);
-  document.getElementById('main').style.backgroundColor="skyblue";
-  
-  document.getElementById('prompt').innerHTML="Welcome to WidMirSim! Your objective is to keep the internal temperature as close to 72&deg; for 100 hours. Don't get more than 100 complaints, and DON'T spend more than $1000!";
-  
-  clearTimeout(t);
-  document.getElementById('timerButton').value="Start Timer";
-  }
+    if (!timerRunning)
+    {
+        timerRunning=1;
+        document.getElementById('game').style.backgroundColor=colorAtTime[0];
+        document.getElementById("intro").style.display="none";
+        document.getElementById("success").style.display="none";
+        document.getElementById("fail").style.display="none";
+        document.getElementById("play").style.display="inline";
+        updateStatus();
+    }
+    else
+    {
+        
+        timerRunning=0;
+        seconds = 0;
+        outsideTemp=65;
+        insideTemp=72;
+        people=0;
+        anger=0;
+        cost=0;
+        totalAnger=0;
+        difference=0;
+        
+        document.getElementById('timeBox').innerHTML=0;
+        document.getElementById('outTempBox').innerHTML="72&deg;";
+        document.getElementById('outThermoEmpty').height=120;
+        document.getElementById('outThermoFull').height=170;
+        document.getElementById('inTempBox').innerHTML="72&deg;";
+        document.getElementById('inThermoEmpty').height=120;
+        document.getElementById('inThermoFull').height=170;
+        document.getElementById('costBox').innerHTML="$"+cost;
+        document.getElementById('peopleBox').innerHTML=people;
+        document.getElementById('angerBox').innerHTML=Math.round(totalAnger/1500);
+        document.getElementById('game').style.backgroundColor=colorAtTime[0];
+        
+        document.getElementById("intro").style.display="inline";
+        document.getElementById("success").style.display="none";
+        document.getElementById("fail").style.display="none";
+        document.getElementById("play").style.display="none";
+        
+        clearTimeout(t);
+    }
 }
 
 function windows()
 {
-  windowsOpen=1;
-  document.getElementById('windowIMG').src="WidMirTempControlWindowOPEN.png";
+    windowsOpen=1;
+    document.getElementById('window').style.display="none";
 }
 
 function windowsClosed()
 {
-  windowsOpen=0;
-  document.getElementById('windowIMG').src="WidMirTempControlWindowCLOSED.png";
+    windowsOpen=0;
+    document.getElementById('window').style.display="inline";
 }
 
 function heating()
 {
-  heatingOn=1;
-  document.getElementById('heaterIMG').src="WidMirTempControlHeaterON.png";
+    heatingOn=1;
+    document.getElementById('heater').src="flame.png";
 }
 
 function heatingOff()
 {
-  heatingOn=0;
-  document.getElementById('heaterIMG').src="WidMirTempControlHeaterOFF.png";
+    heatingOn=0;
+    document.getElementById('heater').src="flamedim.png";
 }
 
 function cooling()
 {
-  coolingOn=1;
-  document.getElementById('coolerIMG').src="WidMirTempControlACON.png";
+    coolingOn=1;
+    document.getElementById('ac').src="snow.png";
 }
 
 function coolingOff()
 {
-  coolingOn=0;
-  document.getElementById('coolerIMG').src="WidMirTempControlACOFF.png";
+    coolingOn=0;
+    document.getElementById('ac').src="snowdim.png";
 }
 
 function updateStatus()
 {
-seconds++;
-t=setTimeout("updateStatus()",250);
-
-outsideTemp = outTempAtTime[seconds%48];
-people = peopleAtTime[seconds%48];
-document.getElementById('main').style.backgroundColor = colorAtTime[Math.round((seconds%48)/2)];
-
-difference=outsideTemp-insideTemp;
-if(windowsOpen)
-  {
-  insideTemp+=(difference/2);
-  }
-else
-  {
-  insideTemp+=(difference/20);
-  }
-
-if(coolingOn)
-  {
-  insideTemp-=2;
-  cost+=20;
-  }
-if(heatingOn)
-  {
-  insideTemp+=2;
-  cost+=20;
-  }
-
-insideTemp+=people/15;
-anger=people*(Math.abs(insideTemp-72));
-totalAnger+=anger;
-  
-document.getElementById('timeBox').innerHTML="HRS Passed: "+Math.round(seconds/2);
-
-document.getElementById('outTempBox').innerHTML=Math.round(outsideTemp)+"&deg;";
-document.getElementById('outThermoEmpty').height=60-((outsideTemp-42)/2);
-document.getElementById('outThermoFull').height=((outsideTemp-42)/2);
-document.getElementById('inTempBox').innerHTML=Math.round(insideTemp)+"&deg;";
-document.getElementById('inThermoEmpty').height=60-((insideTemp-42)/2);
-document.getElementById('inThermoFull').height=((insideTemp-42)/2);
-
-document.getElementById('costBox').innerHTML="Money Spent: $"+cost;
-document.getElementById('peopleBox').innerHTML="People: "+people;
-document.getElementById('angerBox').innerHTML="Complaints: "+Math.round(totalAnger/1500);
-
-if(seconds == 200)
-  {
-  document.getElementById('prompt').innerHTML="TimesUp! TotalAnger="+(totalAnger/1500)+" cost="+cost+" expression="+(((totalAnger/1500)<1000000) && (cost<100000000000));
-  if(((totalAnger/1500)<1000000) && (cost<100000000000))
+    seconds++;
+    t=setTimeout("updateStatus()",250);
+    
+    outsideTemp = outTempAtTime[seconds%48];
+    people = peopleAtTime[seconds%48];
+    document.getElementById('game').style.backgroundColor = colorAtTime[Math.round((seconds%48)/2)];
+    
+    difference=outsideTemp-insideTemp;
+    if(windowsOpen)
     {
-    	  document.getElementById('prompt').innerHTML="Good Work! You've completed the mission! Feel free to continue playing, or just exit out!";
-    	  x.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_4.webhooks.setWebHookReq/344/8/0/"+<?php echo $_GET[playerId] ?>, true);
-    	  x.send();
-        x.oncomplete=refreshConvos();
-		//Success!
+        insideTemp+=(difference/2);
     }
-    else{
-      document.getElementById('prompt').inngerHTML="Sorry! You FAILED!";
+    else
+    {
+        insideTemp+=(difference/20);
     }
-  }
-
+    
+    if(coolingOn)
+    {
+        insideTemp-=2;
+        cost+=20;
+    }
+    if(heatingOn)
+    {
+        insideTemp+=2;
+        cost+=20;
+    }
+    
+    insideTemp+=people/15;
+    anger=people*(Math.abs(insideTemp-72));
+    totalAnger+=anger;
+    
+    document.getElementById('timeBox').innerHTML=Math.round(seconds/2);
+    
+    document.getElementById('outTempBox').innerHTML=Math.round(outsideTemp)+"&deg;";
+    document.getElementById('outThermoEmpty').height=192-outsideTemp;//72 = 120
+    document.getElementById('outThermoFull').height=outsideTemp+98;//72 = 170
+    document.getElementById('inTempBox').innerHTML=Math.round(insideTemp)+"&deg;";
+    document.getElementById('inThermoEmpty').height=192-insideTemp;;
+    document.getElementById('inThermoFull').height=insideTemp+98;
+    
+    document.getElementById('costBox').innerHTML="$"+cost;
+    document.getElementById('peopleBox').innerHTML=people;
+    document.getElementById('angerBox').innerHTML=Math.round(totalAnger/1500);
+    
+    if(seconds == 200)
+    {
+        if(((totalAnger/1500)<10) && (cost<2000))
+        {
+            document.getElementById('play').style.display="none";
+            document.getElementById('success').style.display="inline";
+            x.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_4.webhooks.setWebHookReq/344/8/0/"+<?php echo $_GET[playerId] ?>, true);
+            x.oncomplete=refreshConvos();
+            x.send();
+        }
+        else{
+            document.getElementById('play').style.display="none";
+            document.getElementById('fail').style.display="inline";    
+        }
+    }
 }
 
 function refreshConvos(){
@@ -192,163 +190,136 @@ function closeMe(){
 
 </script> 
 </head>
-<body padding="0">
-<div style="
-      top:10;
-      left: 130;
-      position: absolute;
-      z-index: 1;
-      visibility: show;">
-<table width="190" height="100" border="0" cellpadding="0" cellspacing="0">
+
+<div id="intro" style="display:inline;">
+<table border="0" cellspacing="0" cellpadding="0" width="320" height="420">
 <tr>
 <td>
 <b>
-<div id="prompt">
-HERE-> <?php echo $_REQUEST['playerId'] ?> <-HERE
-	Welcome to WidMirSim! Your objective is to keep the internal temperature as close to 72&deg; for 100 hours. Don't get more than 100 complaints, and DON'T spend more than $1000!
-</div>
+Welcome to the Temperature Control System (TCS) for WidMir!
 </b>
+<p>
+Your goal is to maintain an indoor temperature of as close to 72&deg; as possible while there are people in the building. You must do this for 100 hours, and you musn't spend more than $2000 on heating/AC, or get more than 10 complaints. 
+<br/>
+<br/>
+<b>
+Things to Know:
+</b>
+<br/>
+-People come in during the day, and leave at night<br/>
+-The more people, the more body heat<br/>
+-The more people, the more opportunity for complaints<br/>
+-An open window is an effective way to alter the temperature without costing any money<br/>
+<br/>
+<b>Good Luck!</b>
+</td>
+</tr>
+<tr>
+<td>
+<input type="button" id="timerButton" value="Start Game!" onclick="timer()">
+
 </td>
 </tr>
 </table>
 </div>
 
-<form>
-<div style="
-	top:0;
-	left:0;
-	position: absolute;
-	z-index:0;
-	visibility:show;">
-<table id="main" border="0" cellspacing="0" cellpadding="0" width="320" height="356" class="screen" bgcolor="skyblue">
-	<!--Stats-->
-	<tr height="72">
-		<td>
-			<table border="0" cellspacing="0" cellpadding="0" width="320" height="72">
-				<tr>
-					<td>
-						<div id="timeBox">HRS Passed: 0</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="costBox">Money Spent: $0</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="peopleBox">People: 0</div> 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="angerBox">Complaints: 0</div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	
-	<!--Feedback-->
-	<tr height="23">
-		<td>
-			<input type="button" id="timerButton" value="Start Timer" onclick="timer()">
-		</td>
-	</tr>
-	
-	<!--Thermos-->
-	<tr height="160">
-		<td>
-			<table border="0" cellspacing="0" cellpadding="0" width="320">
-				<tr height="150">
-					<td width="30">
-					</td>
-					<td width="30">
-						<table border="0" cellspacing="0" cellpadding="0" width="30" >
-							<tr>
-								<td>	
-									<img  src="WidMirTempControlThermo_01.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img id="inThermoEmpty" width="30" height="30" src="WidMirTempControlThermo_02.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img id="inThermoFull" width="30" height="30" src="WidMirTempControlThermoFill.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src="WidMirTempControlThermo_03.png">
-								</td>
-							</tr>
-						</table>
-					</td>
-					<td width="100">
-						<div id="inTempBox">72&deg;</div>
-					</td>
-					<td width="30">
-					</td>
-					<td width="30">
-						<table border="0" cellspacing="0" cellpadding="0" width="30">
-							<tr>
-								<td>	
-									<img  src="WidMirTempControlThermo_01.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img id="outThermoEmpty" width="30" height="30" src="WidMirTempControlThermo_02.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img id="outThermoFull" width="30" height="30" src="WidMirTempControlThermoFill.png">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<img src="WidMirTempControlThermo_03.png">
-								</td>
-							</tr>
-						</table>
-					</td>
-					<td width="130">
-						<div id="outTempBox">72&deg;</div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	
-	<!--Buttons-->
-	<tr height="100">
-		<td>
-			<table border="0" cellspacing="0" cellpadding="0" width="320" height="100">
-				<tr>
-					<td align="center" width="100">
-						<img id="heaterIMG" onMouseDown="return heating()" onMouseUp="return heatingOff()" src="WidMirTempControlHeaterOFF.png">
-					</td>
-					<td align="center" width="100">
-						<img id="coolerIMG" onMouseDown="return cooling()" onMouseUp="return coolingOff()" src="WidMirTempControlACOFF.png">
-					</td>
-					<td align="center" width="100">
-						<img id="windowIMG" onMouseDown="return windows()" onMouseUp="return windowsClosed()" src="WidMirTempControlWindowCLOSED.png">
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr height="10">
-	</tr>
+<div id="play" style="display:none;">
+<!-- Touch Ups -->
+<img id="heater" src="thermofullleft.png" style="position:absolute; top:310; left:8;"/>
+<img id="heater" src="thermofullright.png" style="position:absolute; top:310; left:168;"/>
+<img id="heater" src="thermoemptyleft.png" style="position:absolute; top:22; left:8;" height="325" width="160"/>
+<img id="heater" src="thermoemptyright.png" style="position:absolute; top:22; left:168;" height="325" width="160"/>
+<!-- Game Images -->
+<img id="heater" src="flamedim.png" style="position:absolute; top:310; left:85;" ontouchstart="heating()" ontouchend="heatingOff()"/>
+<img id="ac" src="snowdim.png" style="position:absolute; top:310; left:190;" ontouchstart="cooling()" ontouchend="coolingOff()"/>
+<img id="window" src="closedWindow.png" style="position:absolute; top:223; left:96; display:inline;" ontouchstart="windows()" ontouchend="windowsClosed()"/>
+
+
+
+<!-- Game Text -->
+<div id="timeBox" style="position:absolute; top:43; left:125;">0</div>
+<div id="costBox" style="position:absolute; top:77; left:132">$0</div>
+<div id="peopleBox" style="position:absolute; top:43; left:225;">0</div>
+<div id="angerBox" style="position:absolute; top:77; left:252;">0</div>
+<div id="outTempBox" style="position:absolute; top:385; left:305;">0&deg;</div>
+<div id="inTempBox" style="position:absolute; top:385; left:20;">0&deg;</div>
+
+
+<table id="game" border="0" cellspacing="0" cellpadding="0" width="320" height="420" style="backgroundColor:black;">
+<tr>
+<td>
+</td>
+</tr>
+<tr height="29">
+<td>
+<img src="thermotops.png"/>
+</td>
+</tr>
+<tr height="290">
+<td>
+<!-- INNER THERMOS TABLE-->
+<table border="0" cellspacing="0" cellpadding="0" width="320" height="290">
+<tr>
+<td>
+
+<!--LEFT THERMO TABLE -->
+<table border="0" cellspacing="0" cellpadding="0" width="160" height="290">
+<tr>
+<td>
+<img id="inThermoEmpty" src="thermoemptyleft.png" height="120" width="160"/>
+</td>
+</tr>
+<tr>
+<td>
+<img id="inThermoFull" src="thermofullleft.png" height="170" width="160"/>
+</td>
+</tr>
+</table>
+
+</td>
+<td>
+
+<!--RIGHT THERMO TABLE -->
+<table border="0" cellspacing="0" cellpadding="0" width="160" height="290">
+<tr>
+<td>
+<img id="outThermoEmpty" src="thermoemptyright.png" height="120" width="160"/>
+</td>
+</tr>
+<tr>
+<td>
+<img id="outThermoFull" src="thermofullright.png" height="170" width="160"/>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+<!-- /INNER THERMOS TABLE -->
+</td>
+</tr>
+<tr height="77">
+<td>
+<img src="thermobottoms.png"/>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+</tr>
 </table>
 </div>
-</form>
 
-<br />
+<div id="success" style="display:none;">
+Congratulations! You've succeeded!
+</div>
+
+<div id="fail" style="display:none;">
+Sorry, try again? 
+<input type="button" value="Reset" onclick="timer()">
+
+</div>
 
 </body>
 </html>

@@ -2,16 +2,32 @@
 <head>
 <meta name = "viewport" content = "width = device-width">
 <script type="text/javascript">
-var code= ['button1', 'button1', 'button2', 'button3', 'button5'];
+var code= ['button1', 'button1', 'button2', 'button3', 'button5', 'button8'];
 var progress = 0;
 var x = new XMLHttpRequest();
+var y = new XMLHttpRequest();
+var z = new XMLHttpRequest();
+var w = new XMLHttpRequest();
+
+
+var theNote = "";
+
 
 function success(){
-    x.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_4.webhooks.setWebHookReq/344/11/0/"+<?php echo $_GET[playerId] ?>, true);
-    x.send();
+	var noteObj = document.getElementById('fibsong');
+	noteObj.play();
+	setTimeout(function(){noteObj.pause();},10000);
+    x.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_5.webhooks.setWebHookReq/344/11/0/<?php echo $_GET['playerId']; ?>", true);
+	 x.send();
+	y.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_5.players.giveItemToPlayer/344/3/<?php echo $_GET['playerId']; ?>/1", true);
+	 y.send();
+   	z.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_5.players.destroyItem/344/<?php echo $_GET['playerId']; ?>/1/1", true);
+	 z.send();
+	w.open("GET", "http://arisgames.org/qaserver/json.php/aris_1_5.players.destroyItem/344/<?php echo $_GET['playerId']; ?>/2/1", true);
+    w.send();
     x.oncomplete = refreshConvos();   
     document.getElementById("main").style.display="none";
-    document.getElementById("final").style.display="inline";
+    document.getElementById("success").style.display="inline";
 }
 
 function refreshConvos(){
@@ -74,8 +90,8 @@ NoClickDelay.prototype = {
 
 function buttonPressed(button){
 	console.log("buttonPressed(" + button + ")");
-	document.getElementById(button).src="fibbokeypressed.png";
-	setTimeout(function(){document.getElementById(button).src="fibbokey.png";},500);
+	document.getElementById(button).src=("images/" + button + "h.gif");
+	setTimeout(function(){document.getElementById(button).src=("images/" + button + ".gif");},500);
 	updateProgressIndicatorAfterPress(button);
 	//initAndPlay(button + 'audio'); 
 	
@@ -83,13 +99,14 @@ function buttonPressed(button){
 
 function initAndPlay(note){
 	console.log("initAndPlay(" + note + ")");
-	var noteObj = document.getElementById(note);
+	var noteObj = document.getElementById('scale');
+	theNote = note;
+	noteObj.src = noteObj.src; //fixes glitch with event listeners not getting dispatched the second time
+	play(note);
+	//document.getElementById('scale').load();
+	//noteObj.play(); //start loading
 	
-	//noteObj.src = noteObj.src; //fixes glitch with event listeners not getting dispatched the second time
-	
-	noteObj.play(); //start loading
-
-	if(noteObj.readyState !== 4){ //HAVE_ENOUGH_DATA
+	/*if(noteObj.readyState !== 4){ //HAVE_ENOUGH_DATA
 		console.log("noteObj.readyState !== 4, we need to load the data before we try changing currentTime");
 		noteObj.addEventListener('canplaythrough', onCanPlay, false);
 		noteObj.addEventListener('load', onCanPlay, false); //'canplaythrough' sometimes doesn't dispatch.
@@ -100,33 +117,62 @@ function initAndPlay(note){
 		//audio is ready
 		console.log("noteObj.readyState == 4");
 		play(note);
-	}
+	}*/
 }
 
 function onCanPlay(evt){
-	var note = this.id;
+	var note = theNote;
 	console.log("onCanPlay(" + note + ")");
 	play(note);
+
 }
 
 function play(note){
 	console.log("play(" + note + ")");
-	var noteObj = document.getElementById(note);
-	noteObj.removeEventListener('canplaythrough', onCanPlay, false);
-	noteObj.removeEventListener('load', onCanPlay, false);
+	var noteObj = document.getElementById('scale');
+	//noteObj.removeEventListener('canplaythrough', onCanPlay, false);
+	//noteObj.removeEventListener('load', onCanPlay, false);
 	
 	//audio is loaded, so we can adjust the currentTime safely.
-	noteObj.currentTime = 0.0;
-	noteObj.play();
+	//var player1 = new player('CMajorScale.mp3', 8, 12, 0.1);
+	switch(note){
+		case "button1audio":
+		player.play(0);
+		break;
+		case "button2audio":
+		player.play(1);
+		break;
+		case "button3audio":
+		noteObj.currentTime = 1.05;
+		break;
+		case "button4audio":
+		noteObj.currentTime = 1.6;
+		break;
+		case "button5audio":
+		noteObj.currentTime = 2.1;
+		break;
+		case "button6audio":
+		noteObj.currentTime = 2.6;
+		break;
+		case "button7audio":
+		noteObj.currentTime = 3.1;
+		break;
+		case "button8audio":
+		noteObj.currentTime = 3.55;
+		break;
+	}
 	
+	//noteObj.play();
+	//setTimeout(function(){noteObj.pause();},400);
 }
 
 function updateProgressIndicatorAfterPress(button){
 	console.log("updateProgressIndicator(" + button + ")");
 
 	if (code[progress] == button){
-		document.getElementById("indicator" + progress).innerHTML = "<img src=\"progress.png\"/>";
 		progress++;
+		//document.getElementById("progress").innerHTML = progress;
+		
 		
 		//If progress is the size of the code array, we have won!
 		if(progress == code.length){
@@ -134,7 +180,8 @@ function updateProgressIndicatorAfterPress(button){
         }
 	}
 	else {
-		if(code[0] == note){
+		progress = 0;
+		/*if(code[0] == note){
 			document.getElementById("indicator" + 0).innerHTML = "<img src=\"progress.png\"/>";
 			document.getElementById("indicator" + 1).innerHTML = "";
 			document.getElementById("indicator" + 2).innerHTML = "";
@@ -149,7 +196,7 @@ function updateProgressIndicatorAfterPress(button){
 			document.getElementById("indicator" + 2).innerHTML = "";
 			document.getElementById("indicator" + 3).innerHTML = "";
 			document.getElementById("indicator" + 4).innerHTML = "";
-		}
+		}*/
 	}
 }
 
@@ -189,7 +236,23 @@ function loaded() {
 		buttonPressed('button5');
 	}, false);	
 	
+	var button6 = document.getElementById('button6');
+	new NoClickDelay(button6);
+	button6.addEventListener('click', function(e){
+		buttonPressed('button6');
+	}, false);	
 	
+	var button7 = document.getElementById('button7');
+	new NoClickDelay(button7);
+	button7.addEventListener('click', function(e){
+		buttonPressed('button7');
+	}, false);	
+	
+	var button8 = document.getElementById('button8');
+	new NoClickDelay(button8);
+	button8.addEventListener('click', function(e){
+		buttonPressed('button8');
+	}, false);	
 	//Preload the media
 	//This only works in a UI Web View that has 
 	//allowsInlineMediaPlayback = YES and mediaPlaybackRequiresUserAction = NO
@@ -201,156 +264,292 @@ function loaded() {
 	document.getElementById('button4audio').load();
 	document.getElementById('button5audio').load();
 	*/
-
+	
+document.getElementById('scale').load();
 
 }
 
+/*
+function Track(src, spriteLength, audioLead) {
+  var track = this,
+      audio = document.getElementById('scale');
+  audio.src = src;
+  audio.autobuffer = true;
+  audio.load();
+  audio.muted = true; // makes no difference on iOS :(
+  */
+  /* This is the magic. Since we can't preload, and loading requires a user's
+input. So we bind a touch event to the body, and fingers crossed, the
+user taps. This means we can call play() and immediate pause - which will
+start the download process - so it's effectively preloaded.
+This logic is pretty insane, but forces iOS devices to successfully
+skip an unload audio to a specific point in time.
+first we play, when the play event fires we pause, allowing the asset
+to be downloaded, once the progress event fires, we should have enough
+to skip the currentTime head to a specific point. */
+ /*    
+  var force = function () {
+    audio.pause();
+    audio.removeEventListener('play', force, false);
+  };
+  
+  var progress = function () {
+    audio.removeEventListener('progress', progress, false);
+    if (track.updateCallback !== null) track.updateCallback();
+  };
+  
+  audio.addEventListener('play', force, false);
+  audio.addEventListener('progress', progress, false);
+  
+  var kickoff = function () {
+    audio.play();
+    document.documentElement.removeEventListener(click, kickoff, true);
+  };
+  
+  document.documentElement.addEventListener(click, kickoff, true);
+  
+  this.updateCallback = null;
+  this.audio = audio;
+  this.playing = false;
+  this.lastUsed = 0;
+  this.spriteLength = spriteLength;
+  this.audioLead = audioLead;
+}
+ 
+Track.prototype.play = function (position) {
+  var track = this,
+      audio = this.audio,
+      lead = this.audioLead,
+      length = this.spriteLength,
+      time = lead + position * length,
+      nextTime = time + length;
+      
+  clearInterval(track.timer);
+  track.playing = true;
+  track.lastUsed = +new Date;
+  
+  audio.muted = false;
+  audio.pause();
+  try {
+    if (time == 0) time = 0.01; // yay hacks. Sometimes setting time to 0 doesn't play back
+    audio.currentTime = time;
+    audio.play();
+  } catch (e) {
+    this.updateCallback = function () {
+      track.updateCallback = null;
+      audio.currentTime = time;
+      audio.play();
+    };
+    audio.play();
+  }
+ 
+  track.timer = setInterval(function () {
+    if (audio.currentTime >= nextTime) {
+      audio.pause();
+      audio.muted = true;
+      clearInterval(track.timer);
+      player.playing = false;
+    }
+  }, 3.8);
+};
 
-
+var player = (function (src, n, spriteLength, audioLead) {
+  var tracks = [],
+      total = n,
+      i;
+  
+  while (n--) {
+    tracks.push(new Track(src, spriteLength, audioLead));
+  }
+  
+  return {
+    tracks: tracks,
+    play: function (position) {
+      var i = total,
+          track = null;
+          
+      while (i--) {
+        if (tracks[i].playing === false) {
+          track = tracks[i];
+          break;
+        } else if (track === null || tracks[i].lastUsed < track.lastUsed) {
+          track = tracks[i];
+        }
+      }
+      
+      if (track) {
+        track.play(position);
+      } else {
+        // console.log('could not find a track to play :(');
+      }
+    }
+  };
+})('CMajorScale.mp3',1,.4,0);
+*/
 
 window.addEventListener('load', function(){ setTimeout(function(){ loaded(); }, 100) }, true);
 
+
 </script>
 </head>
-<body margin='-20'>
-
+<body >
+<img src="OpenBox.jpg" id="success" style="display:none">
 <!-- Save for Web Slices (instrument.psd) -->
-<table id="Table_01" width="100%" height="100%" border="0" margin = "-20" cellpadding="0" cellspacing="0">
+<table id="main" width="320" height="417" border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td colspan="16">
-			<img src="images/instrument_01.jpg" width="320" height="157" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="157" alt=""></td>
+		<td id = 'progress' colspan="17">
+			<img src="images/instrument_01.gif" width="320" height="52" alt="">
+            </td>
+	</tr>
+
+	<tr>
+		<td colspan="8" rowspan="2">
+			<img src="images/instrument_02.gif" width="116" height="35" alt=""></td>
+		<td colspan="7">
+			<img id='button1' src="images/button1.gif" width="45" height="29" alt=""></td>
+		<td colspan="2" rowspan="14">
+			<img src="images/instrument_04.gif" width="159" height="256" alt=""></td>
 	</tr>
 	<tr>
-		<td rowspan="16">
-			<img src="images/instrument_02.jpg" width="37" height="259" alt=""></td>
-		<td rowspan="7">
-			<img id = 'button1' src="images/instrument_03.jpg" width="26" height="42" alt=""></td>
-		<td colspan="14">
-			<img src="images/instrument_04.jpg" width="257" height="14" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="14" alt=""></td>
+
+		<td colspan="7">
+			<img src="images/instrument_05.gif" width="45" height="6" alt=""></td>
 	</tr>
 	<tr>
-		<td colspan="12">
-			<img src="images/instrument_05.jpg" width="182" height="3" alt=""></td>
-		<td rowspan="8">
-			<img id = 'button8' src="images/instrument_06.jpg" width="25" height="36" alt=""></td>
-		<td rowspan="15">
-			<img src="images/instrument_07.jpg" width="50" height="245" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="14">
-			<img src="images/instrument_08.jpg" width="3" height="242" alt=""></td>
-		<td rowspan="8">
-			<img id = 'button2' src="images/instrument_09.jpg" width="27" height="38" alt=""></td>
-		<td colspan="10">
-			<img src="images/instrument_10.jpg" width="152" height="3" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
+		<td colspan="6" rowspan="2">
+			<img src="images/instrument_06.gif" width="107" height="37" alt=""></td>
+		<td colspan="8">
+			<img id='button2' src="images/button2.gif" width="43" height="33" alt=""></td>
+		<td rowspan="12">
+
+			<img src="images/instrument_08.gif" width="11" height="221" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="8">
-			<img id = 'button7' src="images/instrument_11.jpg" width="123" height="3" alt=""></td>
-		<td rowspan="8">
-			<img src="images/instrument_12.jpg" width="25" height="42" alt=""></td>
-		<td rowspan="13">
-			<img src="images/instrument_13.jpg" width="4" height="239" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
+			<img src="images/instrument_09.gif" width="43" height="4" alt=""></td>
 	</tr>
 	<tr>
-		<td rowspan="12">
-			<img src="images/instrument_14.jpg" width="4" height="236" alt=""></td>
-		<td rowspan="8">
-			<img id = 'button3' src="images/instrument_15.jpg" width="27" height="40" alt=""></td>
-		<td colspan="6">
-			<img src="images/instrument_16.jpg" width="92" height="13" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="13" alt=""></td>
+		<td colspan="3" rowspan="2">
+			<img src="images/instrument_10.gif" width="91" height="40" alt=""></td>
+
+		<td colspan="9">
+			<img id='button3' src="images/button3.gif" width="48" height="35" alt=""></td>
+		<td colspan="2" rowspan="8">
+			<img src="images/instrument_12.gif" width="11" height="151" alt=""></td>
 	</tr>
 	<tr>
-		<td rowspan="11">
-			<img src="images/instrument_17.jpg" width="5" height="223" alt=""></td>
-		<td rowspan="9">
-			<img id = 'button4' src="images/instrument_18.jpg" width="25" height="39" alt=""></td>
-		<td colspan="4">
-			<img src="images/instrument_19.jpg" width="62" height="1" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
+		<td colspan="9">
+			<img src="images/instrument_13.gif" width="48" height="5" alt=""></td>
+	</tr>
+
+	<tr>
+		<td colspan="2" rowspan="2">
+			<img src="images/instrument_14.gif" width="88" height="42" alt=""></td>
+		<td colspan="8">
+			<img id='button4' src="images/button4.gif" width="48" height="37" alt=""></td>
+		<td colspan="2" rowspan="4">
+			<img src="images/instrument_16.gif" width="3" height="79" alt=""></td>
+	</tr>
+	<tr>
+
+		<td colspan="8">
+			<img src="images/instrument_17.gif" width="48" height="5" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="8">
+			<img src="images/instrument_18.gif" width="82" height="210" alt=""></td>
+		<td colspan="8">
+			<img id='button5' src="images/button5.gif" width="43" height="34" alt=""></td>
+		<td rowspan="2">
+
+			<img src="images/instrument_20.gif" width="11" height="37" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="8">
+			<img src="images/instrument_21.gif" width="43" height="3" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="3" rowspan="6">
+			<img src="images/instrument_22.gif" width="14" height="173" alt=""></td>
+
+		<td colspan="7">
+			<img id='button6' src="images/button6.gif" width="42" height="30" alt=""></td>
+		<td rowspan="2">
+			<img src="images/instrument_24.gif" width="1" height="32" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<img src="images/instrument_25.gif" width="42" height="2" alt=""></td>
+	</tr>
+
+	<tr>
+		<td rowspan="4">
+			<img src="images/instrument_26.gif" width="7" height="141" alt=""></td>
+		<td colspan="8">
+			<img id='button7' src="images/button7.gif" width="39" height="30" alt=""></td>
+		<td rowspan="2">
+			<img src="images/instrument_28.gif" width="8" height="33" alt=""></td>
+	</tr>
+	<tr>
+
+		<td colspan="8">
+			<img src="images/instrument_29.gif" width="39" height="3" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="2">
-			<img src="images/instrument_20.jpg" width="36" height="11" alt=""></td>
-		<td rowspan="7">
-			<img id = 'button6' src="images/instrument_21.jpg" width="23" height="32" alt=""></td>
-		<td rowspan="10">
-			<img src="images/instrument_22.jpg" width="3" height="222" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="5" alt=""></td>
+			<img src="images/instrument_30.gif" width="7" height="108" alt=""></td>
+		<td colspan="9">
+			<img id='button8' src="images/button8.gif" width="54" height="36" alt=""></td>
+		<td rowspan="2">
+
+			<img src="images/instrument_32.gif" width="156" height="108" alt=""></td>
 	</tr>
 	<tr>
-		<td rowspan="9">
-			<img src="images/instrument_23.jpg" width="26" height="217" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
+		<td colspan="9">
+			<img src="images/instrument_33.gif" width="54" height="72" alt=""></td>
 	</tr>
 	<tr>
-		<td rowspan="8">
-			<img src="images/instrument_24.jpg" width="6" height="211" alt=""></td>
-		<td rowspan="7">
-			<img id = 'button5' src="images/instrument_25.jpg" width="30" height="35" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="2" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="7">
-			<img src="images/instrument_26.jpg" width="25" height="209" alt=""></td>
+			<img src="images/spacer.gif" width="82" height="1" alt=""></td>
+
 		<td>
-			<img src="images/spacer.gif" width="1" height="5" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="6">
-			<img src="images/instrument_27.jpg" width="27" height="204" alt=""></td>
+			<img src="images/spacer.gif" width="6" height="1" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="7" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="5">
-			<img src="images/instrument_28.jpg" width="25" height="197" alt=""></td>
+			<img src="images/spacer.gif" width="3" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="5" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="7" height="1" alt=""></td>
+		<td>
+
+			<img src="images/spacer.gif" width="4" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="3" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="6" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="9" height="1" alt=""></td>
+		<td>
+			<img src="images/spacer.gif" width="11" height="1" alt=""></td>
+
+		<td>
+			<img src="images/spacer.gif" width="2" height="1" alt=""></td>
 		<td>
 			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="4">
-			<img src="images/instrument_29.jpg" width="27" height="196" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="3">
-			<img src="images/instrument_30.jpg" width="23" height="190" alt=""></td>
+			<img src="images/spacer.gif" width="3" height="1" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="2">
-			<img src="images/instrument_31.jpg" width="25" height="184" alt=""></td>
+			<img src="images/spacer.gif" width="8" height="1" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
-	</tr>
-	<tr>
+
+			<img src="images/spacer.gif" width="11" height="1" alt=""></td>
 		<td>
-			<img src="images/instrument_32.jpg" width="30" height="176" alt=""></td>
+			<img src="images/spacer.gif" width="3" height="1" alt=""></td>
 		<td>
-			<img src="images/spacer.gif" width="1" height="176" alt=""></td>
+			<img src="images/spacer.gif" width="156" height="1" alt=""></td>
 	</tr>
 </table>
-
-
+<!-- End Save for Web Slices -->
 
 
 
@@ -360,6 +559,9 @@ window.addEventListener('load', function(){ setTimeout(function(){ loaded(); }, 
 <audio id="button3audio" preload="auto" src = "3.m4a"></audio>
 <audio id="button4audio" preload="auto" src = "4.m4a"></audio>
 <audio id="button5audio" preload="auto" src = "5.m4a"></audio>
+<audio id="scale" preload="auto" src = "CMajorScale.mp3"></audio>
+<audio id="fibsong" preload="auto" src = "fibsong.mp3"></audio>
+
 
 </body>
 </html>

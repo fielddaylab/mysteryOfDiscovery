@@ -23,28 +23,28 @@ function runGame(){
 
 var imgA = new Image();
 imgA.onload = function() {aLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgA.src = "numba1d.png";
+imgA.src = "left1.png";
 var imgB = new Image();
 imgB.onload = function() {bLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgB.src = "numba2d.png";
+imgB.src = "left2.png";
 var imgC = new Image();
 imgC.onload = function() {cLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgC.src = "numba3d.png";
+imgC.src = "left3.png";
 var imgD = new Image();
 imgD.onload = function() {dLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgD.src = "numba4d.png";
+imgD.src = "left4.png";
 var imgAa = new Image();
 imgAa.onload = function() {aaLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgAa.src = "numba1.png";
+imgAa.src = "right1.png";
 var imgBa = new Image();
 imgBa.onload = function() {baLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgBa.src = "numba2.png";
+imgBa.src = "right2.png";
 var imgCa = new Image();
 imgCa.onload = function() {caLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgCa.src = "numba3.png";
+imgCa.src = "right3.png";
 var imgDa = new Image();
 imgDa.onload = function() {daLoaded=true; if(aLoaded && bLoaded && cLoaded && dLoaded && aaLoaded && baLoaded && caLoaded && daLoaded) runGame();};
-imgDa.src = "numba4.png";
+imgDa.src = "right4.png";
 
 </script>
 
@@ -53,10 +53,10 @@ imgDa.src = "numba4.png";
 <body>
 <span id="loadCover" style="display:inline, position:absolute, top:0, left:0"><img src="blackBox.png" width="1000"/></span>
 <pre id="debug"></pre>
-<input type="button" id="submitButton" value="Submit" onclick="submit()" style="visibility:visible">
-<input type="button" id="closeButton" value="Close" onclick="closeMe()" style="visibility:visible">
-<img src="success.png" id="success" style="display:none">
-<img src="fail.png" id="fail" style="display:none">
+<input type="button" id="submitButton" value="Submit" onClick="submit()" style="visibility:visible">
+<input type="button" id="closeButton" value="Close" onClick="closeMe()" style="visibility:visible">
+<img src="success.jpg" id="success" style="display:none">
+<img src="fail.jpg" id="fail" style="display:none">
 
 <table id="main" border="1" style="display:none">
 <tr>
@@ -65,22 +65,22 @@ imgDa.src = "numba4.png";
 <table id="miniA" border="1">
 <tr>
 <td>
-<img id="aa" class="drop" src="numba1.png"/>
+<img id="aa" class="drop" src="left1.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="ba" class="drop" src="numba2.png"/>
+<img id="ba" class="drop" src="left2.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="ca" class="drop" src="numba3.png"/>
+<img id="ca" class="drop" src="left3.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="da" class="drop" src="numba4.png"/>
+<img id="da" class="drop" src="left4.png"/>
 </td>
 </tr>
 </table>
@@ -91,22 +91,22 @@ imgDa.src = "numba4.png";
 <table id="miniB" border="1">
 <tr>
 <td>
-<img id="a" class="drag" src="numba1d.png"/>
+<img id="a" class="drag" src="right3.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="b" class="drag" src="numba2d.png"/>
+<img id="b" class="drag" src="right2.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="c" class="drag" src="numba3d.png"/>
+<img id="c" class="drag" src="right4.png"/>
 </td>
 </tr>
 <tr>
 <td>
-<img id="d" class="drag" src="numba4d.png"/>
+<img id="d" class="drag" src="right1.png"/>
 </td>
 </tr>
 </table>
