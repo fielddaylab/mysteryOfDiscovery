@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <script src="arisjs.js" type="text/javascript"></script>
+<script src="howler.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 var code= ['button1', 'button1', 'button2', 'button3', 'button5', 'button8'];
 var progress = 0;
@@ -15,24 +16,24 @@ var w = new XMLHttpRequest();
 
 var theNote = "";
 
-window.onload = function() {
-	ARIS.prepareMedia(34960);
-	ARIS.prepareMedia(34961);
-	ARIS.prepareMedia(34962);
-	ARIS.prepareMedia(34963);
-	ARIS.prepareMedia(34964);
-	ARIS.prepareMedia(34965);
-	ARIS.prepareMedia(34966);
-        ARIS.prepareMedia(34967);
-	ARIS.prepareMedia(34968);
-};
+window.song = new Howl({src: ['sound/fibsong_mono.wav']});
+window.notes = [
+    new Howl({src: ['sound/CMajorScaleMono0.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono1.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono2.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono3.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono4.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono5.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono6.mp3']}),
+    new Howl({src: ['sound/CMajorScaleMono7.mp3']}),
+];
 
 function success(){
 	window.scrollTo(0, 0);
 //	var noteObj = document.getElementById('fibsong');
 //	noteObj.play();
 //	setTimeout(function(){noteObj.pause();},10000);
-	ARIS.playMedia(34960);
+	window.song.play();
 //	x.open("GET", "http://arisgames.org/server/json.php/aris_1_5.webhooks.setWebHookReq/344/32/0/<?php echo $_GET['playerId']; ?>", true);
 //	x.send();
 //	y.open("GET", "http://arisgames.org/server/json.php/aris_1_5.players.giveItemToPlayer/344/3/<?php echo $_GET['playerId']; ?>/1", true);
@@ -137,28 +138,28 @@ function play(note){
 	console.log("play(" + note + ")");
     switch(note){
 		case "button1audio":
-                	ARIS.playMedia(34961);
+            window.notes[0].play();
 			break;
 		case "button2audio":
-                	ARIS.playMedia(34962);
+            window.notes[1].play();
 			break;
 		case "button3audio":
-			ARIS.playMedia(34963);
+			window.notes[2].play();
 			break;
 		case "button4audio":
-			ARIS.playMedia(34964);
+			window.notes[3].play();
 			break;
 		case "button5audio":
-      			ARIS.playMedia(34965); 
+      		window.notes[4].play();
 			break;
 		case "button6audio":
-			ARIS.playMedia(34966);
+			window.notes[5].play();
 			break;
 		case "button7audio":
-			ARIS.playMedia(34967);
+			window.notes[6].play();
 			break;
 		case "button8audio":
-			ARIS.playMedia(34968);
+			window.notes[7].play();
 			break;
 	}
 }
