@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta name = "viewport" content = "width = device-width"/>
+<style type="text/css" media="screen"><!--
+  body { margin: -10px 0 0 -10px; }
+  html body { margin: 0; padding: 0; } 
+//--></style>
+<script type="text/javascript">
+var x = new XMLHttpRequest();
+var n = 0;
+function buttonWasPressed()
+{
+	document.getElementById('button').src = "you_win.jpg";
+	n++;
+	x.open("GET", "http://dev.arisgames.org/server/pusher/public_send.php?channel=344&event=userAction&data=bigRedButtonPressed", true);
+     x.send();
+     x.oncomplete = refreshConvos();
+}
+</script>
+</head>
+<body id="body">
+<img id="button" src="destroy-plant.jpg" width="320px" height = "417px" onClick="buttonWasPressed()"/>
+</body>
+</html>

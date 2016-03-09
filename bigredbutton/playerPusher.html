@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+  <title>Big Red Button Player</title>
+  <script src="http://js.pusher.com/1.11/pusher.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function(message) {
+      if (window.console && window.console.log) window.console.log(message);
+    };
+
+    // Flash fallback logging - don't include this in production
+    WEB_SOCKET_DEBUG = true;
+
+    var pusher = new Pusher('7fe26fe9f55d4b78ea02');
+    var channel = pusher.subscribe('344');
+    channel.bind('userAction', function(data) {
+      if(data == 'bigRedButtonPressed') {
+      	console.log("Big Red Button Pressed!");
+      	document.getElementById("normalvid").pause();
+      	document.getElementById("normaldiv").style.display = "none";
+
+      	document.getElementById("outrodiv").style.display = "block";
+      	document.getElementById("outrovid").play();
+      }
+    });
+    
+    function resume(){
+        console.log("Resume!");
+      	document.getElementById("outrodiv").style.display = "none";
+
+      	document.getElementById("normaldiv").style.display = "block";
+      	document.getElementById("normalvid").play();
+    }
+    
+    function onload(){
+    	document.getElementById("normalvid").play();
+    	document.getElementById("outrovid").onended = resume();
+    }
+    
+  </script>  
+</head>
+<body onload="onload()">
+  	<div id = "outrodiv" style = "display:none;"><video id = 'outrovid' width = "100%" src="outro_ARISWID_full_quality - Computer.m4v" onended="resume()"></video></div>
+  	<div id = "normaldiv" style = "display:block;"><video id = 'normalvid' width = "100%" src="normal.m4v" controls="controls" loop="loop"></video></div>
+</body>
