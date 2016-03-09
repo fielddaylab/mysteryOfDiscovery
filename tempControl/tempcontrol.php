@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+<meta name="viewport" content="width=320, user-scalable=no"/>
 <script src="arisjs.js" type="text/javascript"></script>
 <script type="text/javascript">
 
